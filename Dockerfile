@@ -7,11 +7,11 @@ USER root
 # Install necessary tools, including curl and tar
 RUN apt-get update && \
     apt-get install -y curl tar && \
-    curl -LO https://github.com/openshift/okd/releases/download/v4.15.0/openshift-client-linux.tar.gz && \
-    tar -xvf openshift-client-linux.tar.gz && \
+    curl -LO https://github.com/openshift/okd/releases/download/4.15.0-0.okd-2024-03-10-010116/openshift-client-linux-4.15.0-0.okd-2024-03-10-010116.tar.gz && \
+    tar -xvf openshift-client-linux-4.15.0-0.okd-2024-03-10-010116.tar.gz && \
     mv oc /usr/local/bin/oc && \
     chmod +x /usr/local/bin/oc && \
-    rm openshift-client-linux.tar.gz && \
+    rm openshift-client-linux-4.15.0-0.okd-2024-03-10-010116.tar.gz && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
