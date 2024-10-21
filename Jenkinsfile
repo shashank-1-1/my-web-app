@@ -5,7 +5,7 @@ pipeline {
         // Store these securely in Jenkins credentials
         OPENSHIFT_SERVER = credentials('my-openshift-server') 
         OPENSHIFT_TOKEN  = credentials('my-openshift-token')
-        REGISTRY_URL = "your-docker-registry.com"
+        REGISTRY_URL = "docker.io/shashank325/test"
         DOCKER_USERNAME = credentials('docker-username')
         DOCKER_PASSWORD = credentials('docker-password') 
     }
@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/your-username/my-web-app.git'
+                git branch: 'main', url: 'https://github.com/shashank-1-1/my-web-app.git'
             }
         }
         stage('Build & Push Docker Image') {
