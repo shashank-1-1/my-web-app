@@ -1,32 +1,35 @@
 pipeline {
-  agent any
-  stages {
-    stage('Test Credentials') { 
-      steps {
-        build job: 'Test-Credentials-Pipeline', propagate: false 
-      }
-    } 
+    agent any
 
-    stage('Checkout') {
-      steps {
-        git branch: 'main', url: 'https://github.com/shashank-1-1/my-web-app.git'
-      }
+    environment {
+        // Store these securely in Jenkins credentials
+        OPENSHIFT_SERVER = credentials('my-openshift-server')
+        OPENSHIFT_TOKEN  = credentials('my-openshift-token')
+        REGISTRY_URL = "docker.io/shashank325/test"
+        DOCKER_USERNAME = credentials('docker-username')
+        DOCKER_PASSWORD = credentials('docker-password')
     }
 
-    stage('Build & Push Docker Image') {
-      steps {
-        sh "docker build -t ${REGISTRY_URL}/my-web-app:$BUILD_NUMBER ."
-        sh "echo \"${DOCKER_PASSWORD}\" | docker login ${REGISTRY_URL} -u ${DOCKER_USERNAME} --password-stdin"
-        sh "docker push ${REGISTRY_URL}/my-web-app:$BUILD_NUMBER"
-      }
-    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/shashank-1-1/my-web-app.git'
+            }
+        }
+        stage('Build & Push Docker Image') {
+            steps {
+                // Build
+                sh "docker build -t ${REGISTRY_URL}/my-web-app:$BUILD_NUMBER ."
 
-    stage('Deploy to OpenShift') {
-      steps {
-        sh "oc login ${OPENSHIFT_SERVER} --token=${OPENSHIFT_TOKEN}"
-        sh "oc project shashanktest"
-        sh "oc apply -f openshift/deployment.yaml"
-      }
-    }
-  }
-}
+                // Docker login
+                sh "echo \"${DOCKER_PASSWORD}\" | docker login ${REGISTRY_URL} -u ${DOCKER_USERNAME} --password-stdin"
+
+                // Push
+                sh "docker push ${REGISTRY_URL}/my-web-app:$BUILD_NUMBER"
+            }
+        }
+        stage('Deploy to OpenShift') {
+            steps {
+                sh "oc login ${OPENSHIFT_SERVER} --token=${OPENSHIFT_TOKEN}"
+                sh "oc project shashanktest" // Replace with your project name
+                sh "
