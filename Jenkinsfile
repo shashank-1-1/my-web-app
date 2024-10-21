@@ -10,12 +10,7 @@ pipeline {
         DOCKER_PASSWORD = credentials('docker-password')
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/shashank-1-1/my-web-app.git'
-            }
-        }
+    stages { 
         stage('Build & Push Docker Image') {
             steps {
                 // Build
@@ -32,4 +27,8 @@ pipeline {
             steps {
                 sh "oc login ${OPENSHIFT_SERVER} --token=${OPENSHIFT_TOKEN}"
                 sh "oc project shashanktest" // Replace with your project name
-                sh "
+                sh "oc apply -f openshift/deployment.yaml" 
+            }
+        }
+    }
+} 
