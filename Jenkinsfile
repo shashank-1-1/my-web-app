@@ -14,13 +14,13 @@ pipeline {
         stage('Build & Push Docker Image') {
             steps {
                 // Build
-                sh "docker build -t ${REGISTRY_URL}/my-web-app:$BUILD_NUMBER ."
+                sh "docker build -t shashank325/test:my-web-app:${BUILD_NUMBER} ."
 
                 // Docker login
-                sh "echo \"${DOCKER_PASSWORD}\" | docker login ${REGISTRY_URL} -u ${DOCKER_USERNAME} --password-stdin"
+                sh "echo \"${DOCKER_PASSWORD}\" | docker login -u ${DOCKER_USERNAME} --password-stdin"
 
                 // Push
-                sh "docker push ${REGISTRY_URL}/my-web-app:$BUILD_NUMBER"
+                sh "docker push shashank325/test:my-web-app:${BUILD_NUMBER}"
             }
         }
         stage('Deploy to OpenShift') {
