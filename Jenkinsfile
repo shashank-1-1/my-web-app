@@ -31,5 +31,5 @@ pipeline {
         stage('Deploy to OpenShift') {
             steps {
                 sh "oc login ${OPENSHIFT_SERVER} --token=${OPENSHIFT_TOKEN}"
-                sh "oc project my-project" // Replace with your project name
+                sh "oc project shashanktest" // Replace with your project name
                 sh "
