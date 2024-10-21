@@ -7,11 +7,11 @@ USER root
 # Install necessary tools, including curl and unzip
 RUN apt-get update && \
     apt-get install -y curl unzip && \
-    curl -LO https://github.com/openshift/okd/releases/download/v4.9.0/openshift-client-windows.zip && \
-    unzip openshift-client-windows.zip && \
-    mv oc.exe /usr/local/bin/oc && \
+    curl -LO https://github.com/openshift/okd/releases/download/v4.9.0/openshift-client-linux.tar.gz && \
+    tar -xvf openshift-client-linux.tar.gz && \
+    mv oc /usr/local/bin/oc && \
     chmod +x /usr/local/bin/oc && \
-    rm openshift-client-windows.zip && \
+    rm openshift-client-linux.tar.gz && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
