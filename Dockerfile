@@ -21,9 +21,9 @@ WORKDIR /app
 # Copy Python application files into the container
 COPY src/main/python/ ./
 
-# Create a virtual environment in a directory where the jenkins user has permissions
+# Create a virtual environment in a writable directory and install dependencies
 RUN python3 -m venv /app/venv && \
-    /app/venv/bin/pip install --no-cache-dir -r requirements.txt
+    /app/venv/bin/pip install --no-cache-dir -r requirements.txt 
 
 # Expose the application port
 EXPOSE 8080
