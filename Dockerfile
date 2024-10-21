@@ -2,7 +2,7 @@ FROM jenkins/jenkins:lts
 
 USER root
 
-# Install curl, tar, Python, and pip
+# Install required packages
 RUN apt-get update && \
     apt-get install -y curl tar python3 python3-pip python3-venv && \
     curl -LO https://github.com/openshift/okd/releases/download/4.15.0-0.okd-2024-03-10-010116/openshift-client-linux-4.15.0-0.okd-2024-03-10-010116.tar.gz && \
@@ -21,12 +21,13 @@ WORKDIR /app
 # Copy Python application files into the container
 COPY src/main/python/ ./
 
-# Create a virtual environment in a writable directory and install dependencies
-RUN python3 -m venv /app/venv && \
-    /app/venv/bin/pip install --no-cache-dir -r requirements.txt 
+# Create a subdirectory for the virtual environment to avoid permission issues
+RUN mkdir -p /app/venv && \
+    python3 -m venv /app/venv && \
+    /app/venv/bin/pip install --no-cache-dir -r requirements.txt
 
 # Expose the application port
 EXPOSE 8080
 
 # Command to run the application
-CMD ["/app/venv/bin/python", "app.py"]
+CMD ["venv/bin/python", "app.py"]
