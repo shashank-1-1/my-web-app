@@ -2,9 +2,9 @@ FROM jenkins/jenkins:lts
 
 USER root
 
-# Install required packages and OpenShift client
+# Install required packages
 RUN apt-get update && \
-    apt-get install -y curl tar python3 python3-pip && \
+    apt-get install -y curl tar python3 python3-pip python3-venv && \
     curl -LO https://github.com/openshift/okd/releases/download/4.15.0-0.okd-2024-03-10-010116/openshift-client-linux-4.15.0-0.okd-2024-03-10-010116.tar.gz && \
     tar -xvf openshift-client-linux-4.15.0-0.okd-2024-03-10-010116.tar.gz && \
     mv oc /usr/local/bin/oc && \
@@ -12,6 +12,9 @@ RUN apt-get update && \
     rm openshift-client-linux-4.15.0-0.okd-2024-03-10-010116.tar.gz && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# Change ownership of the /app directory
+RUN mkdir /app && chown -R jenkins:jenkins /app
 
 USER jenkins
 
@@ -21,7 +24,7 @@ WORKDIR /app
 # Copy Python application files into the container
 COPY src/main/python/ ./
 
-# Install Python dependencies
+# Create a virtual environment and install dependencies
 RUN python3 -m venv venv && \
     . venv/bin/activate && \
     pip install --no-cache-dir -r requirements.txt
