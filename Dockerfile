@@ -13,9 +13,11 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Create app directory and change ownership
+RUN mkdir -p /app && chown -R jenkins:jenkins /app
+
 USER jenkins
 
-# Set working directory for the Python application
 WORKDIR /app
 
 # Copy Python application files into the container
