@@ -2,12 +2,12 @@ pipeline {
     agent any
 
     environment {
-        // Store these securely in Jenkins credentials
-        OPENSHIFT_SERVER = credentials('my-openshift-server')
-        OPENSHIFT_TOKEN  = credentials('my-openshift-token')
+        // Hardcoded credentials (not recommended for production)
+        OPENSHIFT_SERVER = "https://api.cacheocpnode.cacheocp.com:6443"
+        OPENSHIFT_TOKEN  = "sha256~tCBViHM1YQkXQnG3PTEDuvfJXecj2ZQ9XUtOAF4zqYs"
         REGISTRY_URL = "docker.io/shashank325/test"
-        DOCKER_USERNAME = credentials('docker-username')
-        DOCKER_PASSWORD = credentials('docker-password')
+        DOCKER_USERNAME = "shashank325"
+        DOCKER_PASSWORD = "Shashank@11"
     }
 
     stages { 
