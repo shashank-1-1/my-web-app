@@ -13,6 +13,9 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Create the /app directory and change ownership
+RUN mkdir -p /app && chown -R jenkins:jenkins /app
+
 USER jenkins
 
 # Set working directory for the Python application
@@ -21,10 +24,9 @@ WORKDIR /app
 # Copy Python application files into the container
 COPY src/main/python/ ./
 
-# Create a subdirectory for the virtual environment to avoid permission issues
-RUN mkdir -p /app/venv && \
-    python3 -m venv /app/venv && \
-    /app/venv/bin/pip install --no-cache-dir -r requirements.txt
+# Create a virtual environment and install dependencies
+RUN python3 -m venv venv && \
+    venv/bin/pip install --no-cache-dir -r requirements.txt
 
 # Expose the application port
 EXPOSE 8080
