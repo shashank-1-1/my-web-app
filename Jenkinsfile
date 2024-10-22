@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         OPENSHIFT_SERVER = "https://api.cacheocpnode.cacheocp.com:6443"
-        OPENSHIFT_TOKEN  = "sha256~tCBViHM1YQkXQnG3PTEDuvfJXecj2ZQ9XUtOAF4zqYs"
+        OPENSHIFT_TOKEN  = "sha256~vIZMDxrCGWkEiVgpgR2HVfOOt5jW8l8N_opXyMGbCpw"
         REGISTRY_URL = "docker.io/shashank325/test"
         DOCKER_USERNAME = "shashank325"
         DOCKER_PASSWORD = "Shashank@11"
